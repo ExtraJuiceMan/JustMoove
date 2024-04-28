@@ -23,14 +23,17 @@ except:
 def init_game():
     pygame.init()
     
-    video_config = GameVideoConfiguration(12, CV2VideoFrames(cv2.VideoCapture("olly.mp4")), 
+    video_config = GameVideoConfiguration(12,
+        CV2VideoFrames(cv2.VideoCapture("olly.mp4")),
+        CV2VideoFrames(cv2.VideoCapture("olly.mp4")),
         MediapipeHolisticTracker(
-        model_complexity=2,
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5,
-        static_image_mode=False,
-        smooth_landmarks=True,
-    ))
+            model_complexity=2,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5,
+            static_image_mode=False,
+            smooth_landmarks=True,
+        )
+    )
 
     state = GameState(pygame.font.Font(None, 128), pygame.display.set_mode((1920, 1080)))
 
