@@ -57,7 +57,6 @@ class GameScene(SceneBase):
         if video_frame is None:
             return
 
-
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
         pose_video = PoseFrame(video_frame, self.video_config.motion_tracker, self.video_config.video.last_frame_pose())
 
