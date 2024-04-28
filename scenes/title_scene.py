@@ -1,5 +1,5 @@
 import pygame
-from scene import SceneBase
+from scenes.scene import SceneBase
 
 
 play_img = pygame.image.load("Play Button.png")
