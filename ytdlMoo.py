@@ -11,28 +11,30 @@ def download_video(video_url):
     # Simple download based on the URL
 
 
-def download_shortened_video(video_url, start_time, end_time):
-    # Takes parameters for how long the video should run
-    yt_opts = {
+def download_video_and_audio(video_url, start_time, end_time):
+    ydl_opts = {
         'verbose': True,
-        'download_ranges': yt.utils.download_range_func(None, [(start_time, end_time)]),
+        'format': '[ext=mp4]',
+        'download_ranges': download_range_func(None, [(start_time, end_time)]),
         'force_keyframes_at_cuts': True,
         'outtmpl': 'library/%(title)s.%(ext)s'
-    }
+        }
 
-    with yt.YoutubeDL(yt_opts) as ydl:
+    with yt.YoutubeDL(ydl_opts) as ydl:
         ydl.download([video_url])
 
 
 if __name__ == "__main__":
-    # Replace with your desired video URL, start time, and end time
-    youtube_video_url = "https://www.youtube.com/watch?v=60ItHLz5WEA"
-    start_time = 2  # Accepts decimal value like 2.3
-    end_time = 7
+    # Replace with your desired video URL, start time (in seconds), and end time (in seconds)
+    youtube_video_url = "https://youtu.be/PCN3ZQ9CHR4?feature=shared"
+    start_time = 5
+    end_time = 18
 
     # Create the "library" folder if it doesn't exist
     os.makedirs("library", exist_ok=True)
 
-    download_shortened_video(youtube_video_url, start_time, end_time)
+    download_video_and_audio(youtube_video_url, start_time, end_time)
+
+
 
 
