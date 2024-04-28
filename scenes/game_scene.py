@@ -8,11 +8,16 @@ import pygame
 import cv2
 
 class PoseFrame:
-    def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker):
+    def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None):
         self.frame = frame
         self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_COUNTERCLOCKWISE, self.frame)
-        self.pose_positions = motion_tracker.process_image(self.frame)
-        self.raw_frame: np.ndarray = motion_tracker.raw_image
+
+        if pose_positions is None:
+            self.pose_positions = motion_tracker.process_image(self.frame)["pose_landmarks"].extra["landmarks"]
+        else:
+            self.pose_positions = pose_positions
+
+        self.raw_frame: np.ndarray = frame if pose_positions is None else motion_tracker.raw_image
 
     def frame_size(self):
         return self.frame.shape
@@ -28,7 +33,6 @@ class PoseFrame:
             return (screen_dim[0] // 2 - self.frame_size()[0], 0)
         else:
             return (screen_dim[0] // 2, 0)
-
     
 class GameScene(SceneBase):
     def __init__(self, video_config: GameVideoConfiguration, state: GameState):
@@ -53,9 +57,10 @@ class GameScene(SceneBase):
         if video_frame is None:
             return
 
+
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
-        pose_video = PoseFrame(video_frame, self.video_config.motion_tracker)
+        pose_video = PoseFrame(video_frame, self.video_config.motion_tracker, self.video_config.video.last_frame_pose())
 
         # Display the frame
         screen.blit(pose_video.surface(), pose_video.centered_draw_coords(screen.get_size(), True))
-        screen.blit(pose_camera.unannotated_surface(), pose_camera.centered_draw_coords(screen.get_size(), False))
+        screen.blit(pose_camera.surface(), pose_camera.centered_draw_coords(screen.get_size(), False))

@@ -3,14 +3,15 @@ import time
 import pygame
 import numpy as np
 from pygame.font import Font
-from skellytracker.trackers.base_tracker.base_tracker import BaseTracker
+from media_library import MediaLibrary
 from scenes.game_scene import GameScene
 from scenes.scene import SceneBase
 from scenes.scenes import get_scene, get_start_scene, set_scene
 from scenes.title_scene import TitleScene
-from video_impl import CV2VideoFrames, VideoFramesBase
+from video_impl import CV2VideoFrames, RecordedCV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
-
+from motion_tracker import create_motion_tracker
+from media_library import VideoMetadata, PosePosition
 
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import (
@@ -20,25 +21,17 @@ except:
     print("To use mediapipe_holistic_tracker, install skellytracker[mediapipe]")
     exit()
 
-def create_motion_tracker() -> BaseTracker:
-    return MediapipeHolisticTracker(
-            model_complexity=2,
-            min_detection_confidence=0.5,
-            min_tracking_confidence=0.5,
-            static_image_mode=False,
-            smooth_landmarks=True,
-        )
-
 def init_game():
     pygame.init()
+    video_library = MediaLibrary()
+    video_library.load_videos()
+    state = GameState(pygame.font.Font(None, 128), pygame.display.set_mode((1920, 1080)), video_library)
     
     video_config = GameVideoConfiguration(24,
-        CV2VideoFrames(cv2.VideoCapture("olly.mp4")),
-        CV2VideoFrames(cv2.VideoCapture("olly.mp4")),
+        RecordedCV2VideoFrames(state.videos.get_video(0)),
+        CV2VideoFrames(cv2.VideoCapture("example_vids/olly.mp4")),
         create_motion_tracker()
     )
-
-    state = GameState(pygame.font.Font(None, 128), pygame.display.set_mode((1920, 1080)))
 
     if not video_config.camera.is_open():
         raise Exception("Could not open video device")

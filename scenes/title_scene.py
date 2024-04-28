@@ -1,5 +1,5 @@
 import pygame
-from scene import SceneBase
+from scenes.scene import SceneBase
 
 
 play_rect = pygame.Rect(100, 100, 100, 50)
