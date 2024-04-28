@@ -16,6 +16,13 @@ from game_state import GameVideoConfiguration, GameState
 from motion_tracker import create_motion_tracker
 from media_library import VideoMetadata, PosePosition
 
+from tkinter import Tk
+from tkinter import messagebox
+Tk().wm_withdraw()
+
+
+CAMERA_PARAM = 0
+
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import(
         MediapipeHolisticTracker,
@@ -42,11 +49,13 @@ def init_game():
     
     video_config = GameVideoConfiguration(30,
         RecordedCV2VideoFrames(state.videos.get_video(0)),
-        CV2VideoFrames(cv2.VideoCapture("example_vids/FORTNITE.mp4")),
+        CV2VideoFrames(cv2.VideoCapture(CAMERA_PARAM)),
         create_motion_tracker()
     )
 
     if not video_config.camera.is_open():
+        messagebox.showerror("Error","Webcam device not found or accessible.")
+
         raise Exception("Could not open video device")
 
     set_scene("Title", TitleScene(state))
