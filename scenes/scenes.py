@@ -5,8 +5,10 @@ SCENES: dict[str, SceneBase]= {
     "Title": TitleScene(),
 }
 
+START_SCENE = "Title"
+
 def get_start_scene():
-    return SCENES["Title"]
+    return SCENES[START_SCENE]
 
 def set_scene(title: str, scene: SceneBase):
     SCENES[title] = scene

@@ -1,7 +1,9 @@
 import cv2
 import time
 import pygame
+import sys
 import numpy as np
+import scenes.scene
 from pygame.font import Font
 from media_library import MediaLibrary
 from scenes.game_scene import GameScene
@@ -73,6 +75,9 @@ def game_loop(video_config: GameVideoConfiguration, state: GameState):
     pygame.quit()
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        scenes.scene.START_SCENE = sys.argv[2]
+        
     video_config, state = init_game()
     game_loop(video_config, state)
 
