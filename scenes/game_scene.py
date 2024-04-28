@@ -18,10 +18,10 @@ class PoseFrame:
         return self.frame.shape
 
     def unannotated_surface(self) -> pygame.Surface:
-        return pygame.surfarray.make_surface(self.raw_frame)
+        return pygame.surfarray.make_surface(cv2.cvtColor(self.raw_frame, cv2.COLOR_BGR2RGB))
 
     def surface(self) -> pygame.Surface:
-        return pygame.surfarray.make_surface(self.frame)
+        return pygame.surfarray.make_surface(cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB))
 
     def centered_draw_coords(self, screen_dim: tuple[int, int], left: bool) -> tuple[int, int]:
         if left:
