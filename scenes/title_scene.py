@@ -1,12 +1,17 @@
 import pygame
+from scene import SceneBase
+
 class TitleScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
 
-    def Update(self):
+    def handle_event(self, event: pygame.event.Event):
         pass
 
-    def Render(self, screen):
+    def update(self):
+        pass
+
+    def render(self, screen: pygame.Surface):
         # Set the background color to black
         screen.fill((0, 0, 0))
 
@@ -24,6 +29,3 @@ class TitleScene(SceneBase):
         screen.blit(play_text, (play_rect.x + 10, play_rect.y + 10))
         screen.blit(rules_text, (rules_rect.x + 10, rules_rect.y + 10))
         screen.blit(exit_text, (exit_rect.x + 10, exit_rect.y + 10))
-
-
-run_game(400, 300, 60, TitleScene())
