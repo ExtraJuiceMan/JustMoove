@@ -6,7 +6,7 @@ def minmax_normalize_two_pos(pos1, pos2):
         max_x = max_y = max_z = float('-inf')
 
         # Iterate through both sets of landmarks simultaneously and update min/max
-        for a, b in zip(pos1.landmark, pos2.landmark):
+        for a, b in zip(pos1, pos2):
             # Update min and max for x
             min_x = min(min_x, a.x, b.x)
             max_x = max(max_x, a.x, b.x)
@@ -20,11 +20,11 @@ def minmax_normalize_two_pos(pos1, pos2):
         def normalize(value, min_val, max_val):
             return (value - min_val) / (max_val - min_val) if max_val != min_val else 0
 
-        for landmarks in (pos1.landmark, pos2.landmark):
-            for landmark in landmarks:
-                landmark.x = normalize(landmark.x, min_x, max_x)
-                landmark.y = normalize(landmark.y, min_y, max_y)
-                landmark.z = normalize(landmark.z, min_z, max_z)
+        for pairs in (pos1, pos2):
+            for item in pairs:
+                item.x = normalize(item.x, min_x, max_x)
+                item.y = normalize(item.y, min_y, max_y)
+                item.z = normalize(item.z, min_z, max_z)
 
 
 def compare_pos_by_landmarks_cosine_similarity(pos1, pos2):
@@ -34,9 +34,9 @@ def compare_pos_by_landmarks_cosine_similarity(pos1, pos2):
         # Gather all coordinates into two vectors
         vector1 = []
         vector2 = []
-        for a in pos1.landmark:
+        for a in pos1:
             vector1.extend([a.x, a.y, a.z])
-        for b in pos2.landmark:
+        for b in pos2:
             vector2.extend([b.x, b.y, b.z])
 
         # Convert lists to numpy arrays for vector operations
@@ -68,3 +68,19 @@ def compare_pos_by_landmarks(pos1, pos2):
             sse += euclidean_dist_squared(a, b)
 
         return sse
+
+def sim_to_positive_score(sim):
+    if sim >= 0.95:
+        return 5
+    elif sim >= 0.90:
+        return 4
+    elif sim >= 0.80:
+        return 3
+    elif sim >= 0.75:
+        return 3
+    elif sim >= 0.70:
+        return 2
+    elif sim >= 0.65:
+        return 1
+    else:
+        return 0

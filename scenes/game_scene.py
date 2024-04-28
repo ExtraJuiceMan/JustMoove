@@ -7,6 +7,8 @@ from game_state import GameVideoConfiguration, GameState
 import numpy as np
 import pygame
 import cv2
+import score
+from media_library import PosePosition
 
 GAME_RESOLUTION = (1600, 900)
 
@@ -18,7 +20,14 @@ class PoseFrame:
         self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_COUNTERCLOCKWISE, self.frame)
 
         if pose_positions is None:
-            self.pose_positions = motion_tracker.process_image(self.frame)["pose_landmarks"].extra["landmarks"]
+
+            points = motion_tracker.process_image(self.frame)
+            coord_stuff =points["pose_landmarks"].extra["landmarks"] 
+            if coord_stuff:
+                self.pose_positions = [PosePosition(x.x, x.y, x.z, x.visibility) for x in coord_stuff.landmark]
+            else:
+                self.pose_positions = None
+
         else:
             self.pose_positions = pose_positions
 
@@ -82,6 +91,18 @@ class GameScene(SceneBase):
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
         pose_video = PoseFrame(video_frame, self.video_config.motion_tracker, self.video_config.video.last_frame_pose())
 
+
+        c_pos = pose_camera.pose_positions
+        v_pos = pose_video.pose_positions
+
+        if c_pos and v_pos:
+            sim = score.compare_pos_by_landmarks_cosine_similarity(c_pos, v_pos)
+            self.state.score += score.sim_to_positive_score(sim)
+
+        score_text = "score: " + str(self.state.score)
+        score_text_surface = self.state.font.render(score_text, True, (255, 255, 255))
+
+        # Display the frame
         screen.blit(self.background_image, (0, 0))
         screen.blit(self.game_icon, (0, screen.get_size()[1] - self.game_icon.get_size()[1]))
         screen.blit(pose_video.surface(screen.get_size()), pose_video.centered_draw_coords(screen.get_size(), True))
@@ -90,3 +111,4 @@ class GameScene(SceneBase):
         self.clock.tick()
         fps = self.state.font.render(f"FPS: {self.clock.get_fps():.2f}", True, (255, 255, 255))
         screen.blit(fps, (8, 0))
+        screen.blit(score_text_surface, (50, 50))
