@@ -8,6 +8,7 @@ def download_video(video_url):
     ydl_opts = {'outtmpl': 'library/%(title)s.%(ext)s'}
     with yt.YoutubeDL(ydl_opts) as ydl:
         ydl.download([video_url])
+    return ""
     # Simple download based on the URL
 
 
