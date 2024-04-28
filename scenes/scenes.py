@@ -1,5 +1,5 @@
-from scene import SceneBase
-from title_scene import TitleScene
+from scenes.scene import SceneBase
+from scenes.title_scene import TitleScene
 
 SCENES: dict[str, SceneBase]= {
     "Title": TitleScene(),
