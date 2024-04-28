@@ -43,7 +43,7 @@ def init_game():
     return video_config, state
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
-    scene = get_scene("Game")
+    scene = get_start_scene()
 
     running = True
 
