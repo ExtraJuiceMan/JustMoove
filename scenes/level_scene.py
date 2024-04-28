@@ -49,7 +49,7 @@ class LevelScene(SceneBase):
 
     def switch_level(self, id):
         video = self.state.videos.get_video(id)
-        self.video_config.set_video(RecordedCV2VideoFrames(video))
+        self.video_config.set_video(video)
         self.set_next_scene(get_scene("Game"))
 
     def create_level_entries(self):

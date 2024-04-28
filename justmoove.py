@@ -3,6 +3,7 @@ import time
 import pygame
 import sys
 import numpy as np
+from scenes.end_scene import EndScene
 from scenes.level_scene import LevelScene
 import scenes.title_scene
 from pygame.font import Font
@@ -48,6 +49,7 @@ def init_game():
     )
     
     video_config = GameVideoConfiguration(30,
+        state.videos.get_video(0),
         RecordedCV2VideoFrames(state.videos.get_video(0)),
         CV2VideoFrames(cv2.VideoCapture(CAMERA_PARAM)),
         create_motion_tracker()
@@ -61,6 +63,7 @@ def init_game():
     set_scene("Title", TitleScene(state))
     set_scene("Game", GameScene(video_config, state))
     set_scene("Level", LevelScene(video_config, state))
+    set_scene("End", EndScene(video_config, state))
 
     return video_config, state
 

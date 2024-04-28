@@ -7,6 +7,7 @@ from game_state import GameVideoConfiguration, GameState
 import numpy as np
 import pygame
 import cv2
+from scenes.scenes import get_scene
 import score
 from media_library import PosePosition
 
@@ -94,6 +95,7 @@ class GameScene(SceneBase):
 
     def on_load(self):
         self.state.set_resolution(GAME_RESOLUTION)
+        self.state.score = 0
     
     def render(self, screen: pygame.Surface):
         camera_frame = self.video_config.camera.read_frame()
@@ -104,6 +106,8 @@ class GameScene(SceneBase):
         video_frame = self.video_config.video.read_frame()
 
         if video_frame is None:
+            get_scene("End").set_score(self.state.score)
+            self.set_next_scene(get_scene("End"))
             return
 
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
@@ -118,7 +122,6 @@ class GameScene(SceneBase):
             self.state.score += score.sim_to_positive_score(sim)
             self.score_keeper.score = self.state.score
 
-        
 
         # Display the frame
         screen.blit(self.background_image, (0, 0))
