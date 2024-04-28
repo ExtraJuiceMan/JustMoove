@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # Create the "library" folder if it doesn't exist
     os.makedirs("library", exist_ok=True)
 
-    download_video_and_audio(youtube_video_url, start_time, end_time)
+    download_shortened_video(youtube_video_url, start_time, end_time)
 
 
 
