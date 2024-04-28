@@ -10,7 +10,7 @@ import cv2
 GAME_RESOLUTION = (1920, 1080)
 
 class PoseFrame:
-    def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None):
+    def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None, fit_to=None):
         self.frame = frame
         self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_COUNTERCLOCKWISE, self.frame)
 
@@ -20,6 +20,9 @@ class PoseFrame:
             self.pose_positions = pose_positions
 
         self.raw_frame: np.ndarray = frame if pose_positions is None else motion_tracker.raw_image
+
+        if fit_to:
+            pass
 
     def frame_size(self):
         return self.frame.shape

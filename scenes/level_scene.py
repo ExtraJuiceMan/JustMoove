@@ -69,7 +69,11 @@ class LevelScene(SceneBase):
             offset_x = ROW_START_X_OFFSET + column * entry_x + column * ROW_GAP_X
             offset_y = ROW_START_Y_OFFSET + row * entry_y + row * ROW_GAP_Y
 
-            entries.append(LevelEntry("images/level_entry.png", (offset_x, offset_y), lambda: self.switch_level(video_meta[1].id), self.entry_font, f"Dance #{video_meta[0]}", 69))
+            entries.append(
+                LevelEntry("images/level_entry.png", (offset_x, offset_y),
+                    lambda x=video_meta[1].id: self.switch_level(x), self.entry_font,
+                    f"Dance #{video_meta[0]}",
+                    69))
 
         return entries
 
