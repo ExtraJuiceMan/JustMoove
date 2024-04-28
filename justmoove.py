@@ -28,6 +28,9 @@ def init_game():
     pygame.init()
     pygame.mixer.init()
 
+    pygame.display.set_caption("JustMoove")
+    pygame.display.set_icon(pygame.image.load("images/icon.png"))
+
     video_library = MediaLibrary()
     video_library.load_videos()
 
@@ -54,6 +57,8 @@ def init_game():
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
     scene = get_start_scene()
+
+    scene.on_load()
 
     running = True
 
