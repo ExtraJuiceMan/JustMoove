@@ -1,6 +1,14 @@
 import pygame
 from scene import SceneBase
 
+<<<<<<< Updated upstream
+=======
+
+play_rect = pygame.Rect(100, 100, 100, 50)
+rules_rect = pygame.Rect(100, 160, 100, 50)
+exit_rect = pygame.Rect(100, 220, 100, 50)
+
+>>>>>>> Stashed changes
 class TitleScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
