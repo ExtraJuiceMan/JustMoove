@@ -6,6 +6,7 @@ import cv2
 
 from scenes.scenes import get_scene
 
+
 class TitleScene(SceneBase):
     def __init__(self, state: GameState):
         SceneBase.__init__(self)
@@ -19,7 +20,7 @@ class TitleScene(SceneBase):
 
         self.buttons = [
             GameButton("images/Play Button.png", (654, 359), lambda: (self.click_sound.play(), self.set_next_scene(get_scene("Level")))),
-            GameButton("images/How to Play Button.png", (654, 474), lambda: (self.click_sound.play(), self.set_next_scene(get_scene("HowToPlay")))),
+            GameButton("images/How to Play Button.png", (654, 474), lambda: 0),
             GameButton("images/Exit Button.png", (654, 590), lambda: (self.click_sound.play(), exit()))
         ]
 

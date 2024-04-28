@@ -61,7 +61,7 @@ class EndScene(SceneBase):
         screen.blit(self.background_image, (0, 0))
         screen.blit(self.game_icon, (470, 30))
 
-        screen.blit(self.font.render(f"Dance #{self.video_config.video_meta.id}", True,(255,255,255)), (552, 480))
+        screen.blit(self.font.render(f"Moove #{self.video_config.video_meta.id}", True,(255,255,255)), (552, 480))
 
         self.score_box.draw(screen)
 

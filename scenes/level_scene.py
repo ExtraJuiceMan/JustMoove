@@ -72,7 +72,7 @@ class LevelScene(SceneBase):
             entries.append(
                 LevelEntry("images/level_entry.png", (offset_x, offset_y),
                     lambda x=video_meta[1].id: self.switch_level(x), self.entry_font,
-                    f"Dance #{video_meta[0]}",
+                    f"Moove #{video_meta[0]}",
                     69))
 
         return entries
