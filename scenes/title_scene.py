@@ -1,50 +1,47 @@
 import pygame
 from scenes.scene import SceneBase
+from playScene import playScene
+import pyautogui
+import cv2
 
 
-play_img = pygame.image.load("Play Button.png")
-HowToPlay_img = pygame.image.load("How To Play Button.png")
-exit_img = pygame.image.load("Exit Button.png")
+
 
 class TitleScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
         pygame.mixer.init()
+        self.set_background("Menu.png")
 
-        self.background_image = pygame.image.load("menuIcon.png")
-
-    def check_mouse_collision(self, rect, pos):
-        return rect.collidepoint(pos)
     def click_sound(self):
         clickSound = pygame.mixer.Sound(r'audio\buttonClick.mp3')
         pygame.mixer.Sound.play(clickSound)
-    def handle_event(self, event: pygame.event.Event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            if self.check_mouse_collision(play_img, mouse_pos):
-                self.click_sound()
-                self.set_next_scene(playScene)
-            elif self.check_mouse_collision(HowToPlay_img, mouse_pos):
-                self.click_sound()
-            elif self.check_mouse_collision(exit_img, mouse_pos):
-                self.click_sound()
+
     def handle_event(self, event: pygame.event.Event):
         pass
 
     def update(self):
         pass
 
-    def title(self, screen: pygame.Surface):
-        screen.blit(self.background_image, (0, 0))
-
-
-        # Set the background color to black
-
+    def menu(self, screen: pygame.Surface):
         menumusic = pygame.mixer.Sound(r'audio\menu_music.mp3')
         pygame.mixer.Sound.play(menumusic)
         pygame.mixer.Sound.set_volume(menumusic, 1)
 
-        screen.blit(play_img)
-        screen.blit(HowToPlay_img)
-        screen.blit(exit_img)
 
+    def find_and_click(image_path, confidence=0.5, grayscale=True):
+        # Find position of the image using PyAutoGUI
+        image_position = pyautogui.locateCenterOnScreen(image_path, confidence=confidence, grayscale=grayscale)
+
+        if image_position:
+            # Create a rectangle around the image position
+            image_rect = pygame.Rect(image_position[0] - 50, image_position[1] - 15, 100, 30)
+
+            # Display a message if the rectangle is clicked
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        pos = pygame.mouse.get_pos()
+                        if image_rect.collidepoint(pos):
+                            print("I've been clicked")
+                            return
