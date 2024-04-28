@@ -125,11 +125,11 @@ class GameScene(SceneBase):
 
         # Display the frame
         screen.blit(self.background_image, (0, 0))
-        screen.blit(self.game_icon, (0, screen.get_size()[1] - self.game_icon.get_size()[1]))
         screen.blit(pose_video.surface(screen.get_size()), pose_video.centered_draw_coords(screen.get_size(), True))
         screen.blit(pose_camera.surface(screen.get_size()), pose_camera.centered_draw_coords(screen.get_size(), False))
 
         self.clock.tick()
         fps = self.state.font.render(f"FPS: {self.clock.get_fps():.2f}", True, (255, 255, 255))
         screen.blit(fps, (8, 90))
+        screen.blit(self.game_icon, (0, screen.get_size()[1] - self.game_icon.get_size()[1]))
         self.score_keeper.draw(screen);
