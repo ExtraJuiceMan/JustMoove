@@ -1,3 +1,5 @@
+import numpy as np
+
 def minmax_normalize_two_pos(pos1, pos2):
     if pos1 and pos2:
         min_x = min_y = min_z = float('inf')
@@ -23,6 +25,33 @@ def minmax_normalize_two_pos(pos1, pos2):
                 landmark.x = normalize(landmark.x, min_x, max_x)
                 landmark.y = normalize(landmark.y, min_y, max_y)
                 landmark.z = normalize(landmark.z, min_z, max_z)
+
+
+def compare_pos_by_landmarks_cosine_similarity(pos1, pos2):
+    if pos1 and pos2:
+        minmax_normalize_two_pos(pos1, pos2)  # normalize both landmark sets in place
+
+        # Gather all coordinates into two vectors
+        vector1 = []
+        vector2 = []
+        for a in pos1.landmark:
+            vector1.extend([a.x, a.y, a.z])
+        for b in pos2.landmark:
+            vector2.extend([b.x, b.y, b.z])
+
+        # Convert lists to numpy arrays for vector operations
+        vector1 = np.array(vector1)
+        vector2 = np.array(vector2)
+
+        # Calculate cosine similarity
+        dot_product = np.dot(vector1, vector2)
+        norm1 = np.linalg.norm(vector1)
+        norm2 = np.linalg.norm(vector2)
+        if norm1 == 0 or norm2 == 0:
+            return 0  # To handle the case where a norm is zero
+        cosine_similarity = dot_product / (norm1 * norm2)
+        return cosine_similarity
+
 
 
 # not sure how to type annotate.
