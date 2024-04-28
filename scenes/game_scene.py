@@ -7,6 +7,7 @@ class GameScene(SceneBase):
     def __init__(self, video_config: GameVideoConfiguration, state: GameState):
         self.video_config = video_config
         self.state = state
+        SceneBase.__init__(self)
 
     def handle_event(self, event: pygame.event.Event):
         pass
@@ -15,7 +16,7 @@ class GameScene(SceneBase):
         pass
     
     def render(self, screen: pygame.Surface):
-        frame_available, video_frame = self.video_config.video.read_frame()
+        frame_available, video_frame = self.video_config.camera.read_frame()
 
         if not frame_available:
             return

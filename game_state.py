@@ -4,9 +4,9 @@ from video_impl import VideoFramesBase
 import pygame
 
 class GameVideoConfiguration:
-    def __init__(self, fps: int, video: VideoFramesBase, motion_tracker: BaseTracker):
+    def __init__(self, fps: int, camera: VideoFramesBase, motion_tracker: BaseTracker):
         self.fps = fps
-        self.video = video
+        self.camera = camera
         self.motion_tracker = motion_tracker
 
     def frame_interval(self):

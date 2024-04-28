@@ -6,11 +6,10 @@ from pygame.font import Font
 from skellytracker.trackers.base_tracker.base_tracker import BaseTracker
 from scenes.game_scene import GameScene
 from scenes.scene import SceneBase
-from scenes.scenes import get_start_scene, set_scene
+from scenes.scenes import get_scene, get_start_scene, set_scene
 from scenes.title_scene import TitleScene
 from video_impl import CV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
-
 
 
 try:
@@ -24,7 +23,7 @@ except:
 def init_game():
     pygame.init()
     
-    video_config = GameVideoConfiguration(12, CV2VideoFrames(cv2.VideoCapture(0)), 
+    video_config = GameVideoConfiguration(12, CV2VideoFrames(cv2.VideoCapture("library/fortnite.webm")), 
         MediapipeHolisticTracker(
         model_complexity=2,
         min_detection_confidence=0.5,
@@ -35,15 +34,15 @@ def init_game():
 
     state = GameState(pygame.font.Font(None, 128), pygame.display.set_mode((1920, 1080)))
 
-    if not video_config.video.is_open():
+    if not video_config.camera.is_open():
         raise Exception("Could not open video device")
 
-    set_scene("Title", GameScene(video_config, state))
+    set_scene("Game", GameScene(video_config, state))
 
     return video_config, state
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
-    scene = get_start_scene()
+    scene = get_scene("Game")
 
     running = True
 
