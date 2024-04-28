@@ -16,7 +16,7 @@ from motion_tracker import create_motion_tracker
 from media_library import VideoMetadata, PosePosition
 
 try:
-    from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import (
+    from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import(
         MediapipeHolisticTracker,
     )
 except:
@@ -76,7 +76,7 @@ def game_loop(video_config: GameVideoConfiguration, state: GameState):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        scenes.scene.START_SCENE = sys.argv[2]
+        scenes.scene.START_SCENE = sys.argv[1]
 
     video_config, state = init_game()
     game_loop(video_config, state)
