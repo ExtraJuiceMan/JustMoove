@@ -1,7 +1,6 @@
 import pygame
 from scenes.scene import SceneBase
-from playScene import playScene
-import pyautogui
+#import pyautogui
 import cv2
 
 
@@ -11,7 +10,7 @@ class TitleScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
         pygame.mixer.init()
-        self.set_background("Menu.png")
+        #self.set_background("Menu.png")
 
     def click_sound(self):
         clickSound = pygame.mixer.Sound(r'audio\buttonClick.mp3')
