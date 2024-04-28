@@ -11,7 +11,7 @@ def download_video(video_url):
     # Simple download based on the URL
 
 
-def download_video_and_audio(video_url, start_time, end_time):
+def download_shortened_video(video_url, start_time, end_time):
     ydl_opts = {
         'verbose': True,
         'format': '[ext=mp4]',
