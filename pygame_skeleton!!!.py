@@ -23,7 +23,7 @@ except:
 def init_game():
     pygame.init()
     
-    video_config = GameVideoConfiguration(12, CV2VideoFrames(cv2.VideoCapture("library/fortnite.webm")), 
+    video_config = GameVideoConfiguration(12, CV2VideoFrames(cv2.VideoCapture("olly.mp4")), 
         MediapipeHolisticTracker(
         model_complexity=2,
         min_detection_confidence=0.5,
