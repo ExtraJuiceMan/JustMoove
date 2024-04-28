@@ -1,10 +1,6 @@
 import pygame
 from scenes.scene import SceneBase
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 play_rect = pygame.Rect(100, 100, 100, 50)
 HowToPlay_rect = pygame.Rect(100, 160, 100, 50)
 exit_rect = pygame.Rect(100, 220, 100, 50)
