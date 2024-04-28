@@ -1,5 +1,5 @@
 from typing import Optional
-from scene import SceneBase
+from scenes.scene import SceneBase
 from game_state import GameVideoConfiguration, GameState
 import pygame
 
