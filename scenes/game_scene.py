@@ -1,7 +1,7 @@
 from typing import Optional
 
 from skellytracker.trackers.base_tracker.base_tracker import BaseTracker
-from game_gui import image_resize, image_scaled_dim
+from game_gui import GameButton, GameSprite, image_resize, image_scaled_dim
 from scenes.scene import SceneBase
 from game_state import GameVideoConfiguration, GameState
 import numpy as np
@@ -9,6 +9,8 @@ import pygame
 import cv2
 
 GAME_RESOLUTION = (1600, 900)
+
+
 
 class PoseFrame:
     def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None, fit_to=None):

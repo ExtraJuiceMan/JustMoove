@@ -6,7 +6,7 @@ TITLE_RESOLUTION = (1440, 1024)
 
 class GameSprite:
     def __init__(self, path: str, position: tuple[int, int]):
-        self.sprite = pygame.image.load(path)
+        self.sprite = pygame.image.load(path).convert_alpha()
         self.position = position
 
     def draw(self, screen: pygame.Surface):
