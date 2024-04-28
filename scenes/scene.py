@@ -9,7 +9,6 @@ import pygame
 
 class SceneBase:
     def __init__(self):
-        pass
         self.next_scene = None
 
     def set_next_scene(self, scene: SceneBase):

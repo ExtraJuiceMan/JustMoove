@@ -6,13 +6,12 @@ from pygame.font import Font
 from skellytracker.trackers.base_tracker.base_tracker import BaseTracker
 from scenes.game_scene import GameScene
 from scenes.scene import SceneBase
+from scenes.scenes import get_start_scene, set_scene
 from scenes.title_scene import TitleScene
 from video_impl import CV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
 
-SCENES: dict[str, SceneBase]= {
-    "Title": TitleScene(),
-}
+
 
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import (
@@ -39,12 +38,12 @@ def init_game():
     if not video_config.video.is_open():
         raise Exception("Could not open video device")
 
-    SCENES["Game"] = GameScene(video_config, state)
+    set_scene("Title", GameScene(video_config, state))
 
     return video_config, state
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
-    scene: SceneBase = SCENES["Title"]
+    scene = get_start_scene()
 
     running = True
 
