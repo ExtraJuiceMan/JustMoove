@@ -1,2 +1,7 @@
 ffmpeg
 static-ffmpeg
+opencv-python
+pygame
+numpy
+skellytracker
+skellytracker[mediapipe]
