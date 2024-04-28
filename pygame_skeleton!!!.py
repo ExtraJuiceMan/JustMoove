@@ -4,12 +4,15 @@ import pygame
 import numpy as np
 from pygame.font import Font
 from skellytracker.trackers.base_tracker.base_tracker import BaseTracker
+from scenes.game_scene import GameScene
 from scenes.scene import SceneBase
 from scenes.title_scene import TitleScene
 from video_impl import CV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
 
-SCENES = [TitleScene()]
+SCENES: dict[str, SceneBase]= {
+    "Title": TitleScene(),
+}
 
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import (
@@ -36,10 +39,12 @@ def init_game():
     if not video_config.video.is_open():
         raise Exception("Could not open video device")
 
+    SCENES["Game"] = GameScene(video_config, state)
+
     return video_config, state
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
-    scene: SceneBase = SCENES[0]
+    scene: SceneBase = SCENES["Title"]
 
     running = True
 
@@ -52,20 +57,25 @@ def game_loop(video_config: GameVideoConfiguration, state: GameState):
 
             scene.handle_event(event)
 
-
         scene.update()
 
         scene.render(pygame.display.get_surface())
 
         pygame.display.flip()
 
+        next_scene = scene.pop_next_scene()
+
+        if next_scene:
+            scene = next_scene
+
         # Wait until it's time for the next frame
         elapsed = time.time() - start_time
         delay = max(1, int((video_config.frame_interval() - elapsed) * 1000))  # Calculate remaining time in ms
         pygame.time.wait(delay)
 
-    # When everything done, release the capture and close Pygame
-    cap.release()
     pygame.quit()
 
+if __name__ == "__main__":
+    video_config, state = init_game()
+    game_loop(video_config, state)
 

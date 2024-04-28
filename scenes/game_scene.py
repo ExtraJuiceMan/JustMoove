@@ -1,3 +1,4 @@
+from typing import Optional
 from scene import SceneBase
 from game_state import GameVideoConfiguration, GameState
 import pygame
@@ -8,10 +9,10 @@ class GameScene(SceneBase):
         self.state = state
 
     def handle_event(self, event: pygame.event.Event):
-        return super().handle_event(event)
+        pass
     
     def update(self):
-        return super().update()
+        pass
     
     def render(self, screen: pygame.Surface):
         frame_available, video_frame = self.video_config.video.read_frame()
