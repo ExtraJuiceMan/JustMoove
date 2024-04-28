@@ -1,29 +1,10 @@
 import pygame
 from game_state import GameState
 from scenes.scene import SceneBase
-#import pyautogui
+from game_gui import GameSprite, GameButton, TITLE_RESOLUTION
 import cv2
 
 from scenes.scenes import get_scene
-
-TITLE_RESOLUTION = (1440, 1024)
-
-class GameSprite:
-    def __init__(self, path: str, position: tuple[int, int]):
-        self.sprite = pygame.image.load(path)
-        self.position = position
-
-    def draw(self, screen: pygame.Surface):
-        screen.blit(self.sprite, self.position)
-
-class GameButton(GameSprite):
-    def __init__(self, path: str, position: tuple[int, int], on_click):
-        GameSprite.__init__(self, path, position)
-        self.on_click = on_click
-
-    def was_clicked(self, pos):
-        return self.sprite.get_rect(topleft=self.position).collidepoint(pos)
-
 
 class TitleScene(SceneBase):
     def __init__(self, state: GameState):
@@ -37,7 +18,7 @@ class TitleScene(SceneBase):
         self.background_image = pygame.transform.smoothscale(background_image, (background_image.get_size()[0] * scale_ratio, background_image.get_size()[1] * scale_ratio))
 
         self.buttons = [
-            GameButton("images/Play Button.png", (654, 359), lambda: (self.click_sound.play(), self.set_next_scene(get_scene("Game")))),
+            GameButton("images/Play Button.png", (654, 359), lambda: (self.click_sound.play(), self.set_next_scene(get_scene("Level")))),
             GameButton("images/How to Play Button.png", (654, 474), lambda: (self.click_sound.play(), self.set_next_scene(get_scene("HowToPlay")))),
             GameButton("images/Exit Button.png", (654, 590), lambda: (self.click_sound.play(), exit()))
         ]

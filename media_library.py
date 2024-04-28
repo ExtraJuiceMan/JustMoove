@@ -45,6 +45,9 @@ class MediaLibrary:
     def get_video(self, id: int) -> VideoMetadata:
         return self.videos[id]
 
+    def all_videos(self) -> dict[int, VideoMetadata]:
+        return self.videos
+
     def add_video(self, path: str):
         video_id_int = self.next_id
         video_id = str(self.next_id)

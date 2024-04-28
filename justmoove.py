@@ -3,6 +3,7 @@ import time
 import pygame
 import sys
 import numpy as np
+from scenes.level_scene import LevelScene
 import scenes.title_scene
 from pygame.font import Font
 from media_library import MediaLibrary
@@ -26,14 +27,19 @@ except:
 def init_game():
     pygame.init()
     pygame.mixer.init()
-    
+
     video_library = MediaLibrary()
     video_library.load_videos()
-    state = GameState(pygame.font.Font(None, 64), pygame.display.set_mode(scenes.title_scene.TITLE_RESOLUTION), video_library)
+
+    state = GameState(
+        pygame.font.Font("fonts/Modak-Regular.ttf", 64),
+        pygame.display.set_mode(scenes.title_scene.TITLE_RESOLUTION),
+        video_library
+    )
     
     video_config = GameVideoConfiguration(30,
         RecordedCV2VideoFrames(state.videos.get_video(0)),
-        CV2VideoFrames(cv2.VideoCapture("example_vids/olly.mp4")),
+        CV2VideoFrames(cv2.VideoCapture("example_vids/FORTNITE.mp4")),
         create_motion_tracker()
     )
 
@@ -42,6 +48,7 @@ def init_game():
 
     set_scene("Title", TitleScene(state))
     set_scene("Game", GameScene(video_config, state))
+    set_scene("Level", LevelScene(video_config, state))
 
     return video_config, state
 
