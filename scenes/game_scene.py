@@ -12,7 +12,23 @@ from media_library import PosePosition
 
 GAME_RESOLUTION = (1600, 900)
 
+class ScoreKeeper(GameSprite):
+    def __init__(self, path: str, position: tuple[int, int], font, score=0.0):
+        GameSprite.__init__(self, path, position)
+        self.font = font
+        self.score = score
 
+    def draw(self, screen: pygame.Surface):
+        super().draw(screen)
+        rendered_font = self.font.render(f"{self.score:.2f}", True, (0, 0, 0))
+        score_font = self.font.render("Score", True, (0, 0, 0))
+        font_x, font_y = rendered_font.get_size()
+        entry_x, entry_y = self.sprite.get_size()
+        sfont_x, sfont_y = score_font.get_size()
+        font_pos = (self.position[0] + entry_x // 2 - font_x // 2, self.position[1] - 8)
+        text_font_pos = (self.position[0] + entry_x // 2 - sfont_x // 2, self.position[1] + 24)
+        screen.blit(rendered_font, font_pos)
+        screen.blit(score_font, text_font_pos)
 
 class PoseFrame:
     def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None, fit_to=None):
@@ -68,6 +84,8 @@ class GameScene(SceneBase):
 
         self.game_icon = pygame.transform.smoothscale(pygame.image.load("images/menuIcon.png"), (230, 234)).convert_alpha()
 
+        self.score_keeper = ScoreKeeper("images/score_background.png", (0, 0), pygame.font.Font("fonts/Modak-Regular.ttf", 36))
+
     def handle_event(self, event: pygame.event.Event):
         pass
     
@@ -98,9 +116,9 @@ class GameScene(SceneBase):
         if c_pos and v_pos:
             sim = score.compare_pos_by_landmarks_cosine_similarity(c_pos, v_pos)
             self.state.score += score.sim_to_positive_score(sim)
+            self.score_keeper.score = self.state.score
 
-        score_text = "score: " + str(self.state.score)
-        score_text_surface = self.state.font.render(score_text, True, (255, 255, 255))
+        
 
         # Display the frame
         screen.blit(self.background_image, (0, 0))
@@ -110,5 +128,5 @@ class GameScene(SceneBase):
 
         self.clock.tick()
         fps = self.state.font.render(f"FPS: {self.clock.get_fps():.2f}", True, (255, 255, 255))
-        screen.blit(fps, (8, 0))
-        screen.blit(score_text_surface, (50, 50))
+        screen.blit(fps, (8, 90))
+        self.score_keeper.draw(screen);

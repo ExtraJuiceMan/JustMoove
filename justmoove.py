@@ -21,7 +21,7 @@ from tkinter import messagebox
 Tk().wm_withdraw()
 
 
-CAMERA_PARAM = 0
+CAMERA_PARAM = "example_vids/olly.mp4"
 
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import(
