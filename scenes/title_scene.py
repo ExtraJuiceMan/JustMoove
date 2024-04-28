@@ -30,7 +30,7 @@ class TitleScene(SceneBase):
         pass
 
     def menu(self, screen: pygame.Surface):
-        self.set_background(screen, "images\\Menu.png")  # Set background
+        self.set_background(screen, "images\\menuicon.png")  # Set background
         pygame.display.update()
         menumusic = pygame.mixer.Sound(r'audio\menu_music.mp3')
         pygame.mixer.Sound.play(menumusic)
@@ -38,3 +38,4 @@ class TitleScene(SceneBase):
 
 
 
+sa
