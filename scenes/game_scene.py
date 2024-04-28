@@ -6,6 +6,8 @@ from game_state import GameVideoConfiguration, GameState
 import numpy as np
 import pygame
 import cv2
+import score
+from media_library import PosePosition
 
 class PoseFrame:
     def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None):
@@ -13,7 +15,14 @@ class PoseFrame:
         self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_COUNTERCLOCKWISE, self.frame)
 
         if pose_positions is None:
-            self.pose_positions = motion_tracker.process_image(self.frame)["pose_landmarks"].extra["landmarks"]
+
+            points = motion_tracker.process_image(self.frame)
+            coord_stuff =points["pose_landmarks"].extra["landmarks"] 
+            if coord_stuff:
+                self.pose_positions = [PosePosition(x.x, x.y, x.z, x.visibility) for x in coord_stuff.landmark]
+            else:
+                self.pose_positions = None
+
         else:
             self.pose_positions = pose_positions
 
@@ -60,6 +69,18 @@ class GameScene(SceneBase):
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
         pose_video = PoseFrame(video_frame, self.video_config.motion_tracker, self.video_config.video.last_frame_pose())
 
+
+        c_pos = pose_camera.pose_positions
+        v_pos = pose_video.pose_positions
+
+        if c_pos and v_pos:
+            sim = score.compare_pos_by_landmarks_cosine_similarity(c_pos, v_pos)
+            self.state.score += score.sim_to_positive_score(sim)
+
+        score_text = "score: " + str(self.state.score)
+        score_text_surface = self.state.font.render(score_text, True, (255, 255, 255))
+
         # Display the frame
         screen.blit(pose_video.surface(), pose_video.centered_draw_coords(screen.get_size(), True))
         screen.blit(pose_camera.surface(), pose_camera.centered_draw_coords(screen.get_size(), False))
+        screen.blit(score_text_surface, (50, 50))

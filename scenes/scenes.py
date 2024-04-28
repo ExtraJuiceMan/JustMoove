@@ -1,8 +1,8 @@
 from scenes.scene import SceneBase
-from scenes.title_scene import TitleScene
+# from scenes.title_scene import TitleScene
 
 SCENES: dict[str, SceneBase]= {
-    "Title": TitleScene(),
+    #"Title": TitleScene(),
 }
 
 START_SCENE = "Title"

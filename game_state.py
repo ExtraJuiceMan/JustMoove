@@ -15,7 +15,8 @@ class GameVideoConfiguration:
         return 1 / self.fps
 
 class GameState:
-    def __init__(self, font: Font, screen: pygame.Surface, videos: MediaLibrary):
+    def __init__(self, font: Font, screen: pygame.Surface, videos: MediaLibrary, score: float = 0):
         self.screen = screen
         self.font = font
         self.videos = videos
+        self.score = score
