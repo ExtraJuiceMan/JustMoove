@@ -47,6 +47,7 @@ class GameScene(SceneBase):
     def __init__(self, video_config: GameVideoConfiguration, state: GameState):
         self.video_config = video_config
         self.state = state
+        self.clock = pygame.time.Clock()
         SceneBase.__init__(self)
 
     def handle_event(self, event: pygame.event.Event):
@@ -81,6 +82,10 @@ class GameScene(SceneBase):
         score_text_surface = self.state.font.render(score_text, True, (255, 255, 255))
 
         # Display the frame
+        screen.fill((0, 0, 0))
         screen.blit(pose_video.surface(), pose_video.centered_draw_coords(screen.get_size(), True))
         screen.blit(pose_camera.surface(), pose_camera.centered_draw_coords(screen.get_size(), False))
         screen.blit(score_text_surface, (50, 50))
+        self.clock.tick()
+        fps = self.state.font.render(f"FPS: {self.clock.get_fps():.2f}", True, (255, 255, 255))
+        screen.blit(fps, (10, 10))

@@ -16,7 +16,7 @@ from motion_tracker import create_motion_tracker
 from media_library import VideoMetadata, PosePosition
 
 try:
-    from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import (
+    from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import(
         MediapipeHolisticTracker,
     )
 except:
@@ -27,9 +27,9 @@ def init_game():
     pygame.init()
     video_library = MediaLibrary()
     video_library.load_videos()
-    state = GameState(pygame.font.Font(None, 128), pygame.display.set_mode((1920, 1080)), video_library)
+    state = GameState(pygame.font.Font(None, 64), pygame.display.set_mode((1920, 1080)), video_library)
     
-    video_config = GameVideoConfiguration(24,
+    video_config = GameVideoConfiguration(30,
         RecordedCV2VideoFrames(state.videos.get_video(0)),
         CV2VideoFrames(cv2.VideoCapture("example_vids/olly.mp4")),
         create_motion_tracker()
@@ -43,7 +43,7 @@ def init_game():
     return video_config, state
 
 def game_loop(video_config: GameVideoConfiguration, state: GameState):
-    scene = get_scene("Game")
+    scene = get_start_scene()
 
     running = True
 
@@ -76,8 +76,8 @@ def game_loop(video_config: GameVideoConfiguration, state: GameState):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        scenes.scene.START_SCENE = sys.argv[2]
-        
+        scenes.scene.START_SCENE = sys.argv[1]
+
     video_config, state = init_game()
     game_loop(video_config, state)
 

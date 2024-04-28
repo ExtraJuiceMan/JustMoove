@@ -1,16 +1,23 @@
 import pygame
 from scenes.scene import SceneBase
-#import pyautogui
+# import pyautogui
 import cv2
-
-
-
 
 class TitleScene(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
         pygame.mixer.init()
-        #self.set_background("Menu.png")
+
+    def set_background(self, screen: pygame.Surface, background_image_path: str):
+        """
+        Sets the background image for the given screen.
+
+        Args:
+            screen (pygame.Surface): The Pygame surface to set the background on.
+            background_image_path (str): Path to the background image file.
+        """
+        background_image = pygame.image.load(background_image_path)
+        screen.blit(background_image, (0, 0))
 
     def click_sound(self):
         clickSound = pygame.mixer.Sound(r'audio\buttonClick.mp3')
@@ -23,24 +30,10 @@ class TitleScene(SceneBase):
         pass
 
     def menu(self, screen: pygame.Surface):
+        self.set_background(screen, "images\\menuicon.png")  # Set background
+        pygame.display.update()
         menumusic = pygame.mixer.Sound(r'audio\menu_music.mp3')
         pygame.mixer.Sound.play(menumusic)
         pygame.mixer.Sound.set_volume(menumusic, 1)
 
 
-    def find_and_click(image_path, confidence=0.5, grayscale=True):
-        # Find position of the image using PyAutoGUI
-        image_position = pyautogui.locateCenterOnScreen(image_path, confidence=confidence, grayscale=grayscale)
-
-        if image_position:
-            # Create a rectangle around the image position
-            image_rect = pygame.Rect(image_position[0] - 50, image_position[1] - 15, 100, 30)
-
-            # Display a message if the rectangle is clicked
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        pos = pygame.mouse.get_pos()
-                        if image_rect.collidepoint(pos):
-                            print("I've been clicked")
-                            return
