@@ -14,9 +14,16 @@ class GameVideoConfiguration:
     def frame_interval(self):
         return 1 / self.fps
 
+    def set_video(self, video: RecordedCV2VideoFrames):
+        self.video = video
+
 class GameState:
     def __init__(self, font: Font, screen: pygame.Surface, videos: MediaLibrary, score: float = 0):
         self.screen = screen
         self.font = font
         self.videos = videos
         self.score = score
+
+    def set_resolution(self, resolution):
+        if self.screen.get_size() != resolution:
+            self.screen = pygame.display.set_mode(resolution)
