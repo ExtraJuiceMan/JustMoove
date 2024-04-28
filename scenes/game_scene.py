@@ -7,6 +7,8 @@ import numpy as np
 import pygame
 import cv2
 
+GAME_RESOLUTION = (1920, 1080)
+
 class PoseFrame:
     def __init__(self, frame: np.ndarray, motion_tracker: BaseTracker, pose_positions=None):
         self.frame = frame
@@ -46,6 +48,9 @@ class GameScene(SceneBase):
     
     def update(self):
         pass
+
+    def on_load(self):
+        self.state.set_resolution(GAME_RESOLUTION)
     
     def render(self, screen: pygame.Surface):
         camera_frame = self.video_config.camera.read_frame()

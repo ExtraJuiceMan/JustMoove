@@ -35,3 +35,5 @@ class SceneBase:
     def render(self, screen: pygame.Surface):
         pass
     
+    def on_load(self):
+        pass

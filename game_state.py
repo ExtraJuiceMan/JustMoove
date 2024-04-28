@@ -19,3 +19,6 @@ class GameState:
         self.screen = screen
         self.font = font
         self.videos = videos
+
+    def set_resolution(self, resolution):
+        self.screen = pygame.display.set_mode(resolution)
