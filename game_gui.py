@@ -12,13 +12,14 @@ class GameSprite:
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.position)
 
+    def was_clicked(self, pos):
+        return self.sprite.get_rect(topleft=self.position).collidepoint(pos)
+
+
 class GameButton(GameSprite):
     def __init__(self, path: str, position: tuple[int, int], on_click):
         GameSprite.__init__(self, path, position)
         self.on_click = on_click
-
-    def was_clicked(self, pos):
-        return self.sprite.get_rect(topleft=self.position).collidepoint(pos)
 
 def image_scaled_dim(shape, width=None, height=None):
     # initialize the dimensions of the image to be resized and

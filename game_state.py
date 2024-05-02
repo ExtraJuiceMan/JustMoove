@@ -25,7 +25,11 @@ class GameState:
         self.font = font
         self.videos = videos
         self.score = score
+        self.download_url = None
 
     def set_resolution(self, resolution):
         if self.screen.get_size() != resolution:
             self.screen = pygame.display.set_mode(resolution)
+
+    def set_download_url(self, url):
+        self.download_url = url

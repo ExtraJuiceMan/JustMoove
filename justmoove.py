@@ -13,6 +13,7 @@ from scenes.scene import SceneBase
 from scenes.scenes import get_scene, get_start_scene, set_scene, set_start_scene
 from scenes.title_scene import TitleScene
 from scenes.url_scene import UrlScene
+from scenes.videodl_scene import VideoDlScene
 from video_impl import CV2VideoFrames, RecordedCV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
 from motion_tracker import create_motion_tracker
@@ -39,16 +40,17 @@ def init_game():
 
     pygame.display.set_caption("JustMoove")
     pygame.display.set_icon(pygame.image.load("images/icon.png"))
+    display = pygame.display.set_mode(scenes.title_scene.TITLE_RESOLUTION)
+
+    pygame.scrap.init()
 
     video_library = MediaLibrary()
     video_library.load_videos()
 
     state = GameState(
-        pygame.font.Font("fonts/Modak-Regular.ttf", 64),
-        pygame.display.set_mode(scenes.title_scene.TITLE_RESOLUTION),
-        video_library
+        pygame.font.Font("fonts/Modak-Regular.ttf", 64), display, video_library
     )
-    
+
     video_config = GameVideoConfiguration(30,
         state.videos.get_video(0),
         RecordedCV2VideoFrames(state.videos.get_video(0)),
@@ -65,7 +67,8 @@ def init_game():
     set_scene("Game", GameScene(video_config, state))
     set_scene("Level", LevelScene(video_config, state))
     set_scene("End", EndScene(video_config, state))
-    set_scene("Url", UrlScene())
+    set_scene("Url", UrlScene(state))
+    set_scene("VideoDl", VideoDlScene(video_library, state))
 
     return video_config, state
 

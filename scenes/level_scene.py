@@ -43,6 +43,8 @@ class LevelScene(SceneBase):
 
         self.game_icon = GameSprite("images/icon_transparent.png", (343, 128))
         self.back_button = GameButton("images/level_back.png", (-24, 40), lambda: self.set_next_scene(get_scene("Title")))
+        self.new_video_button = GameButton("images/Next Button.png", (390, 40), lambda: self.set_next_scene(get_scene("Url")))
+
         self.entry_font = pygame.font.Font("fonts/Modak-Regular.ttf", 40)
 
         self.entries = self.create_level_entries()
@@ -83,6 +85,10 @@ class LevelScene(SceneBase):
                 self.back_button.on_click()
                 return
 
+            if self.new_video_button.was_clicked(event.pos):
+                self.new_video_button.on_click()
+                return
+
             button = next(filter(lambda x: x.was_clicked(event.pos), self.entries), None)
 
             if button:
@@ -102,9 +108,11 @@ class LevelScene(SceneBase):
 
         self.game_icon.draw(screen)
         self.back_button.draw(screen)
+        self.new_video_button.draw(screen)
 
         for entry in self.entries:
             entry.draw(screen)
 
     def on_load(self):
         self.state.set_resolution(TITLE_RESOLUTION)
+        self.entries = self.create_level_entries()

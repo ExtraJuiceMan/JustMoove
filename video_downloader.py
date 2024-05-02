@@ -1,16 +1,20 @@
 import yt_dlp as yt
 import os
-import ffmpeg
+import glob
 from yt_dlp.utils import download_range_func
 
 
 def download_video(video_url):
-    ydl_opts = {'outtmpl': 'library/%(title)s.%(ext)s'}
-    with yt.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_url])
-    return ""
-    # Simple download based on the URL
+    ydl_opts = {
+        "outtmpl": "video_downloads/%(title)s.%(ext)s",
+    }
 
+    with yt.YoutubeDL(ydl_opts) as ydl:
+        res = ydl.extract_info(video_url)
+        ydl.process_info(res)
+        path = ydl.prepare_filename(res)
+
+    return path
 
 def download_shortened_video(video_url, start_time, end_time):
     ydl_opts = {
@@ -35,7 +39,3 @@ if __name__ == "__main__":
     os.makedirs("library", exist_ok=True)
 
     download_shortened_video(youtube_video_url, start_time, end_time)
-
-
-
-
