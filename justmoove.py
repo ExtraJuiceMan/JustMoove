@@ -12,6 +12,7 @@ from scenes.game_scene import GameScene
 from scenes.scene import SceneBase
 from scenes.scenes import get_scene, get_start_scene, set_scene, set_start_scene
 from scenes.title_scene import TitleScene
+from scenes.url_scene import UrlScene
 from video_impl import CV2VideoFrames, RecordedCV2VideoFrames, VideoFramesBase
 from game_state import GameVideoConfiguration, GameState
 from motion_tracker import create_motion_tracker
@@ -22,7 +23,7 @@ from tkinter import messagebox
 Tk().wm_withdraw()
 
 
-CAMERA_PARAM = 0
+CAMERA_PARAM = "example_vids/olly.mp4"
 
 try:
     from skellytracker.trackers.mediapipe_tracker.mediapipe_holistic_tracker import(
@@ -64,6 +65,7 @@ def init_game():
     set_scene("Game", GameScene(video_config, state))
     set_scene("Level", LevelScene(video_config, state))
     set_scene("End", EndScene(video_config, state))
+    set_scene("Url", UrlScene())
 
     return video_config, state
 

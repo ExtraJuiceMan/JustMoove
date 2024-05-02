@@ -1,6 +1,10 @@
 import numpy as np
+import copy
 
 def minmax_normalize_two_pos(pos1, pos2):
+    pos1 = copy.deepcopy(pos1)
+    pos2 = copy.deepcopy(pos2)
+
     if pos1 and pos2:
         min_x = min_y = min_z = float('inf')
         max_x = max_y = max_z = float('-inf')
@@ -26,10 +30,12 @@ def minmax_normalize_two_pos(pos1, pos2):
                 item.y = normalize(item.y, min_y, max_y)
                 item.z = normalize(item.z, min_z, max_z)
 
+    return (pos1, pos2)
+
 
 def compare_pos_by_landmarks_cosine_similarity(pos1, pos2):
     if pos1 and pos2:
-        minmax_normalize_two_pos(pos1, pos2)  # normalize both landmark sets in place
+        pos1, pos2 = minmax_normalize_two_pos(pos1, pos2)  # normalize both landmark sets in place
 
         # Gather all coordinates into two vectors
         vector1 = []
