@@ -67,7 +67,7 @@ class PoseFrame:
             return (screen_dim[0] // 2 - self.frame_size(screen_dim)[0], 0)
         else:
             return (screen_dim[0] // 2, 0)
-    
+
 class GameScene(SceneBase):
     def __init__(self, video_config: GameVideoConfiguration, state: GameState):
         SceneBase.__init__(self)
@@ -89,7 +89,7 @@ class GameScene(SceneBase):
 
     def handle_event(self, event: pygame.event.Event):
         pass
-    
+
     def update(self):
         pass
 
@@ -100,7 +100,7 @@ class GameScene(SceneBase):
     def end_game(self):
         get_scene("End").set_score(self.state.score)
         self.set_next_scene(get_scene("End"))
-    
+
     def render(self, screen: pygame.Surface):
         camera_frame = self.video_config.camera.read_frame()
 
@@ -117,20 +117,19 @@ class GameScene(SceneBase):
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
         pose_video = PoseFrame(video_frame, self.video_config.motion_tracker, self.video_config.video.last_frame_pose())
 
+        # Display the frame
+        screen.blit(self.background_image, (0, 0))
+        screen.blit(pose_video.surface(screen.get_size()), pose_video.centered_draw_coords(screen.get_size(), True))
+        screen.blit(pose_camera.surface(screen.get_size()), pose_camera.centered_draw_coords(screen.get_size(), False))
 
         c_pos = pose_camera.pose_positions
         v_pos = pose_video.pose_positions
 
         if c_pos and v_pos:
             sim = score.compare_pos_by_landmarks_cosine_similarity(c_pos, v_pos)
+            screen.blit(self.state.font.render(f"Sim: {sim:.2f}", True, (255, 255, 255)), (8, 135))
             self.state.score += score.sim_to_positive_score(sim)
             self.score_keeper.score = self.state.score
-
-
-        # Display the frame
-        screen.blit(self.background_image, (0, 0))
-        screen.blit(pose_video.surface(screen.get_size()), pose_video.centered_draw_coords(screen.get_size(), True))
-        screen.blit(pose_camera.surface(screen.get_size()), pose_camera.centered_draw_coords(screen.get_size(), False))
 
         self.clock.tick()
         fps = self.state.font.render(f"FPS: {self.clock.get_fps():.2f}", True, (255, 255, 255))

@@ -3,6 +3,7 @@ import time
 import pygame
 import sys
 import numpy as np
+import argparse
 from scenes.end_scene import EndScene
 from scenes.level_scene import LevelScene
 import scenes.title_scene
@@ -108,8 +109,17 @@ def game_loop(video_config: GameVideoConfiguration, state: GameState):
     pygame.quit()
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        set_start_scene(sys.argv[1])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--video", default=None)
+    parser.add_argument("scene", nargs="?", default="Title")
+
+
+    args = parser.parse_args()
+
+    set_start_scene(args.scene)
+
+    if args.video:
+        CAMERA_PARAM = args.video
 
     video_config, state = init_game()
     game_loop(video_config, state)
