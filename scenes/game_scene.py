@@ -96,18 +96,22 @@ class GameScene(SceneBase):
     def on_load(self):
         self.state.set_resolution(GAME_RESOLUTION)
         self.state.score = 0
+
+    def end_game(self):
+        get_scene("End").set_score(self.state.score)
+        self.set_next_scene(get_scene("End"))
     
     def render(self, screen: pygame.Surface):
         camera_frame = self.video_config.camera.read_frame()
 
         if camera_frame is None:
+            self.end_game()
             return
 
         video_frame = self.video_config.video.read_frame()
 
         if video_frame is None:
-            get_scene("End").set_score(self.state.score)
-            self.set_next_scene(get_scene("End"))
+            self.end_game()
             return
 
         pose_camera = PoseFrame(camera_frame, self.video_config.motion_tracker)
